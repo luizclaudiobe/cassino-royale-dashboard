@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projetos Musicais · Cassino Royale</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #151820;
+      --surface2:  #1c2030;
+      --border:    #252a38;
+      --text:      #e8eaf0;
+      --muted:     #6b7280;
+      --accent:    #c9a84c;
+
+      --blue:      #3b82f6;
+      --blue-bg:   rgba(59,130,246,.12);
+      --orange:    #f97316;
+      --orange-bg: rgba(249,115,22,.12);
+      --green:     #22c55e;
+      --green-bg:  rgba(34,197,94,.12);
+      --purple:    #a855f7;
+      --purple-bg: rgba(168,85,247,.12);
+      --red:       #ef4444;
+      --red-bg:    rgba(239,68,68,.12);
+      --gray:      #6b7280;
+      --gray-bg:   rgba(107,114,128,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0d0f14 0%, #151820 50%, #1a1f2e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 32px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+
+    .brand-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--accent), #e8c96e);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .3px;
+    }
+
+    .brand-text span {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+
+    .btn-refresh {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .btn-refresh:hover { border-color: var(--accent); color: var(--accent); }
+
+    .last-update {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── STATS ── */
+    .stats-bar {
+      max-width: 1400px;
+      margin: 28px auto 0;
+      padding: 0 32px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 150px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .stat-value { font-size: 28px; font-weight: 700; line-height: 1; }
+    .stat-value.all    { color: var(--text); }
+    .stat-value.prod   { color: var(--blue); }
+    .stat-value.mix    { color: var(--orange); }
+    .stat-value.done   { color: var(--green); }
+    .stat-value.master { color: var(--purple); }
+
+    /* ── FILTERS ── */
+    .filters-bar {
+      max-width: 1400px;
+      margin: 20px auto 0;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { border-color: var(--accent); }
+
+    .filter-select {
+      padding: 9px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .filter-select:focus { border-color: var(--accent); }
+    .filter-select option { background: var(--surface2); }
+
+    /* ── TABLE WRAPPER ── */
+    .table-section {
+      max-width: 1400px;
+      margin: 20px auto 48px;
+      padding: 0 32px;
+    }
+
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .table-scroll { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    thead { background: var(--surface2); }
+
+    th {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color .2s;
+    }
+    th:hover { color: var(--accent); }
+    th .sort-icon { margin-left: 4px; opacity: .4; }
+    th.asc .sort-icon::after  { content: ' ↑'; opacity: 1; }
+    th.desc .sort-icon::after { content: ' ↓'; opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+
+    td {
+      padding: 13px 16px;
+      color: var(--text);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .td-musica {
+      font-weight: 600;
+      color: var(--text);
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .td-banda {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .td-bpm {
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .td-tom {
+      font-weight: 500;
+      color: #a5b4fc;
+    }
+
+    .td-data { color: var(--muted); font-size: 12px; }
+
+    /* Boolean cells */
+    .check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 6px;
+    }
+    .check.yes { background: rgba(34,197,94,.15); color: #22c55e; }
+    .check.no  { background: rgba(107,114,128,.1); color: #374151; }
+
+    /* Status badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+    .badge.producao  { background: var(--blue-bg);   color: var(--blue);   }
+    .badge.producao  .badge-dot { background: var(--blue); }
+    .badge.mix       { background: var(--orange-bg);  color: var(--orange); }
+    .badge.mix       .badge-dot { background: var(--orange); }
+    .badge.master    { background: var(--purple-bg);  color: var(--purple); }
+    .badge.master    .badge-dot { background: var(--purple); }
+    .badge.finalizado{ background: var(--green-bg);   color: var(--green);  }
+    .badge.finalizado .badge-dot { background: var(--green); }
+    .badge.pausado   { background: var(--red-bg);     color: var(--red);    }
+    .badge.pausado   .badge-dot { background: var(--red); }
+    .badge.outro     { background: var(--gray-bg);    color: var(--gray);   }
+    .badge.outro     .badge-dot { background: var(--gray); }
+
+    /* Empty / loading states */
+    .state-row td {
+      text-align: center;
+      padding: 64px 16px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-icon { font-size: 36px; margin-bottom: 12px; }
+
+    /* ── COUNT BAR ── */
+    .count-bar {
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 18px 16px; }
+      .stats-bar, .filters-bar, .table-section { padding: 0 16px; }
+      .stats-bar { gap: 10px; }
+      .stat-card { min-width: 130px; padding: 14px 16px; }
+      .stat-value { font-size: 22px; }
+      .brand-text h1 { font-size: 17px; }
+      .last-update { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-card { min-width: calc(50% - 5px); flex: none; }
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s cubic-bezier(.34,1.56,.64,1);
+      z-index: 9999;
+      max-width: 320px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { border-color: var(--red); color: var(--red); }
+    #toast.success { border-color: var(--green); color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">🎵</div>
+        <div class="brand-text">
+          <h1>Projetos Musicais</h1>
+          <span>Cassino Royale</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="last-update" id="lastUpdate">—</span>
+        <button class="btn-refresh" id="btnRefresh" onclick="loadData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Atualizar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value all" id="st-total">—</div></div>
+    <div class="stat-card"><div class="stat-label">Em Produção</div><div class="stat-value prod" id="st-prod">—</div></div>
+    <div class="stat-card"><div class="stat-label">Em Mix</div><div class="stat-value mix" id="st-mix">—</div></div>
+    <div class="stat-card"><div class="stat-label">Master</div><div class="stat-value master" id="st-master">—</div></div>
+    <div class="stat-card"><div class="stat-label">Finalizados</div><div class="stat-value done" id="st-done">—</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" id="searchInput" placeholder="Buscar música ou banda…" oninput="applyFilters()" />
+    </div>
+    <select class="filter-select" id="filterStatus" onchange="applyFilters()">
+      <option value="">Todos os status</option>
+      <option value="Em Produção">Em Produção</option>
+      <option value="Em Mix">Em Mix</option>
+      <option value="Master">Master</option>
+      <option value="Finalizado">Finalizado</option>
+      <option value="Pausado">Pausado</option>
+    </select>
+    <select class="filter-select" id="filterBanda" onchange="applyFilters()">
+      <option value="">Todas as bandas</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <div class="table-card">
+      <div class="table-scroll">
+        <table id="mainTable">
+          <thead>
+            <tr>
+              <th onclick="sortBy(0)" data-col="0">Música<span class="sort-icon"></span></th>
+              <th onclick="sortBy(1)" data-col="1">Banda<span class="sort-icon"></span></th>
+              <th onclick="sortBy(2)" data-col="2">BPM<span class="sort-icon"></span></th>
+              <th onclick="sortBy(3)" data-col="3">Tom<span class="sort-icon"></span></th>
+              <th onclick="sortBy(4)" data-col="4">Criação<span class="sort-icon"></span></th>
+              <th>Stems</th>
+              <th>Produção</th>
+              <th>Mix</th>
+              <th>Master</th>
+              <th>Exportado</th>
+              <th>Telão</th>
+              <th onclick="sortBy(11)" data-col="11">Status<span class="sort-icon"></span></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr class="state-row">
+              <td colspan="12">
+                <div class="spinner"></div>
+                <div>Carregando projetos…</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="count-bar">
+        <span id="countInfo">—</span>
+        <span id="sheetLink" style="font-size:11px;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    const SHEET_ID = '1baFnO_6gtjs7G4CzJJzV-H7GiZ_5oJq2dKaYRQfEVFQ';
+    const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+
+    let allRows = [];
+    let sortCol = -1;
+    let sortAsc = true;
+
+    // ── LOAD ──────────────────────────────────────────────
+    async function loadData() {
+      const btn = document.getElementById('btnRefresh');
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner" style="width:14px;height:14px;border-width:2px;margin:0"></div> Carregando…`;
+
+      setTableState('loading');
+
+      try {
+        const url = `${CSV_URL}&_=${Date.now()}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        const rows = parseCSV(text);
+        if (rows.length < 2) throw new Error('Planilha vazia ou sem dados');
+
+        allRows = rows.slice(1).filter(r => r.some(c => c.trim()));
+        buildBandaFilter();
+        applyFilters();
+        updateStats();
+
+        const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('lastUpdate').textContent = `Atualizado às ${now}`;
+        document.getElementById('sheetLink').innerHTML =
+          `<a href="https://docs.google.com/spreadsheets/d/${SHEET_ID}" target="_blank" style="color:var(--muted);text-decoration:none;">Abrir planilha ↗</a>`;
+
+        toast('Dados atualizados', 'success');
+      } catch (e) {
+        setTableState('error', e.message);
+        toast('Erro ao carregar: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg> Atualizar`;
+      }
+    }
+
+    // ── CSV PARSER ─────────────────────────────────────────
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], cell = '', inQ = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (inQ) {
+          if (c === '"' && text[i+1] === '"') { cell += '"'; i++; }
+          else if (c === '"') inQ = false;
+          else cell += c;
+        } else {
+          if (c === '"') { inQ = true; }
+          else if (c === ',') { row.push(cell.trim()); cell = ''; }
+          else if (c === '\n') { row.push(cell.trim()); rows.push(row); row = []; cell = ''; }
+          else if (c === '\r') { /* skip */ }
+          else cell += c;
+        }
+      }
+      if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
+      return rows;
+    }
+
+    // ── FILTERS ────────────────────────────────────────────
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const status = document.getElementById('filterStatus').value.toLowerCase();
+      const banda  = document.getElementById('filterBanda').value.toLowerCase();
+
+      let filtered = allRows.filter(r => {
+        const musica = (r[0] || '').toLowerCase();
+        const rb     = (r[1] || '').toLowerCase();
+        const rs     = (r[11] || '').toLowerCase();
+        const matchSearch = !search || musica.includes(search) || rb.includes(search);
+        const matchStatus = !status || rs.includes(status);
+        const matchBanda  = !banda  || rb.includes(banda);
+        return matchSearch && matchStatus && matchBanda;
+      });
+
+      if (sortCol >= 0) {
+        filtered.sort((a, b) => {
+          const av = (a[sortCol] || '').toLowerCase();
+          const bv = (b[sortCol] || '').toLowerCase();
+          const n  = parseFloat(av) - parseFloat(bv);
+          const cmp = isNaN(n) ? av.localeCompare(bv, 'pt-BR') : n;
+          return sortAsc ? cmp : -cmp;
+        });
+      }
+
+      renderTable(filtered);
+      document.getElementById('countInfo').textContent =
+        `${filtered.length} de ${allRows.length} projeto${allRows.length !== 1 ? 's' : ''}`;
+    }
+
+    // ── SORT ───────────────────────────────────────────────
+    function sortBy(col) {
+      if (sortCol === col) sortAsc = !sortAsc;
+      else { sortCol = col; sortAsc = true; }
+
+      document.querySelectorAll('th').forEach(th => {
+        th.classList.remove('asc', 'desc');
+      });
+      const th = document.querySelector(`th[data-col="${col}"]`);
+      if (th) th.classList.add(sortAsc ? 'asc' : 'desc');
+
+      applyFilters();
+    }
+
+    // ── BUILD BANDA FILTER ─────────────────────────────────
+    function buildBandaFilter() {
+      const sel    = document.getElementById('filterBanda');
+      const bandas = [...new Set(allRows.map(r => r[1] || '').filter(Boolean))].sort();
+      sel.innerHTML = '<option value="">Todas as bandas</option>';
+      bandas.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b; opt.textContent = b;
+        sel.appendChild(opt);
+      });
+    }
+
+    // ── STATS ──────────────────────────────────────────────
+    function updateStats() {
+      document.getElementById('st-total').textContent  = allRows.length;
+      document.getElementById('st-prod').textContent   = count('em produção');
+      document.getElementById('st-mix').textContent    = count('em mix');
+      document.getElementById('st-master').textContent = count('master');
+      document.getElementById('st-done').textContent   = count('finalizado');
+    }
+
+    function count(keyword) {
+      return allRows.filter(r => (r[11] || '').toLowerCase().includes(keyword)).length;
+    }
+
+    // ── RENDER ─────────────────────────────────────────────
+    function renderTable(rows) {
+      const tbody = document.getElementById('tableBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr class="state-row"><td colspan="12">
+          <div class="empty-icon">🎵</div>
+          <div>Nenhum projeto encontrado.</div>
+        </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        const [musica, banda, bpm, tom, data, stems, prod, mix, master, exportado, telao, status] = [
+          r[0]||'', r[1]||'', r[2]||'', r[3]||'', r[4]||'',
+          r[5]||'', r[6]||'', r[7]||'', r[8]||'', r[9]||'', r[10]||'', r[11]||''
+        ];
+
+        return `<tr>
+          <td class="td-musica" title="${esc(musica)}">${esc(musica)}</td>
+          <td class="td-banda">${esc(banda)}</td>
+          <td class="td-bpm">${bpm ? bpm : '<span style="color:var(--border)">—</span>'}</td>
+          <td class="td-tom">${tom ? esc(tom) : '<span style="color:var(--border)">—</span>'}</td>
+          <td class="td-data">${formatDate(data)}</td>
+          ${boolCell(stems)}
+          ${boolCell(prod)}
+          ${boolCell(mix)}
+          ${boolCell(master)}
+          ${boolCell(exportado)}
+          ${boolCell(telao)}
+          <td>${statusBadge(status)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function boolCell(val) {
+      const yes = /^(sim|yes|true|1|x|✓|✔)$/i.test(val.trim());
+      return yes
+        ? `<td><span class="check yes">✓</span></td>`
+        : `<td><span class="check no">—</span></td>`;
+    }
+
+    function statusBadge(status) {
+      const s = status.toLowerCase().trim();
+      let cls = 'outro';
+      if (s.includes('produção') || s.includes('producao')) cls = 'producao';
+      else if (s.includes('mix')) cls = 'mix';
+      else if (s.includes('master')) cls = 'master';
+      else if (s.includes('finalizado') || s.includes('final')) cls = 'finalizado';
+      else if (s.includes('pausado') || s.includes('parado')) cls = 'pausado';
+
+      const label = status || '—';
+      return `<span class="badge ${cls}"><span class="badge-dot"></span>${esc(label)}</span>`;
+    }
+
+    function formatDate(val) {
+      if (!val) return '<span style="color:var(--border)">—</span>';
+      // Try to parse common date formats
+      const d = new Date(val);
+      if (!isNaN(d)) return d.toLocaleDateString('pt-BR');
+      return `<span style="color:var(--muted)">${esc(val)}</span>`;
+    }
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── TABLE STATES ───────────────────────────────────────
+    function setTableState(type, msg) {
+      const tbody = document.getElementById('tableBody');
+      if (type === 'loading') {
+        tbody.innerHTML = `<tr class="state-row"><td colspan="12">
+          <div class="spinner"></div><div>Carregando projetos…</div>
+        </td></tr>`;
+      } else if (type === 'error') {
+        tbody.innerHTML = `<tr class="state-row"><td colspan="12">
+          <div class="empty-icon">⚠️</div>
+          <div style="color:var(--red);margin-bottom:6px">Erro ao carregar dados</div>
+          <div style="font-size:12px;color:var(--muted)">${esc(msg || '')}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px">Verifique se a planilha está pública (compartilhada para "qualquer pessoa com o link").</div>
+        </td></tr>`;
+      }
+    }
+
+    // ── TOAST ──────────────────────────────────────────────
+    let toastTimer;
+    function toast(msg, type = '') {
+      const el = document.getElementById('toast');
+      el.className = type ? `show ${type}` : 'show';
+      const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+      el.innerHTML = `<span>${icon}</span> ${msg}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+    }
+
+    // ── INIT ───────────────────────────────────────────────
+    loadData();
+    // Auto-refresh every 5 minutes
+    setInterval(loadData, 5 * 60 * 1000);
+  </script>
+</body>
+</html>
